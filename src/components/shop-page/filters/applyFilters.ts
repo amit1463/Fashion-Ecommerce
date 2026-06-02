@@ -1,18 +1,14 @@
 import type { Product } from "@/types/product.types";
+import { effectivePrice } from "@/utils/product";
 import type { FiltersState } from "./types";
 
-const effectivePrice = (product: Product) => {
-  if (product.discount.percentage > 0) {
-    return Math.round(
-      product.price - (product.price * product.discount.percentage) / 100
-    );
-  }
-  if (product.discount.amount > 0) {
-    return product.price - product.discount.amount;
-  }
-  return product.price;
-};
-
+/**
+ * Filter a list of products against the current `FiltersState`. Each section
+ * of the filter sidebar is treated as an AND constraint; a product is kept
+ * only when it satisfies every active filter (category, price range, colors,
+ * sizes, dress style). Empty arrays / null values are treated as "no filter
+ * for this section".
+ */
 export const applyFilters = (
   products: Product[],
   filters: FiltersState

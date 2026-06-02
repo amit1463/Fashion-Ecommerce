@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -67,14 +67,10 @@ const Filters = ({ filters, onChange, onApply, className }: FiltersProps) => {
         <button
           type="button"
           onClick={handleClear}
-          className="text-xs text-black/50 hover:text-black underline-offset-2 hover:underline"
+          className="text-black/40 hover:text-black"
+          aria-label="Clear all filters"
         >
-          <Image
-            src="/icons/filter.svg"
-            alt="Clear filters"
-            width={20}
-            height={18}
-          />
+          <X width={20} height={20} aria-hidden="true" />
           <span className="sr-only">Clear all filters</span>
         </button>
       </div>

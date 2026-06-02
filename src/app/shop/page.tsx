@@ -4,9 +4,7 @@ import React from "react";
 import BreadcrumbShop from "@/components/shop-page/BreadcrumbShop";
 import Filters from "@/components/shop-page/filters";
 import MobileFilters from "@/components/shop-page/filters/MobileFilters";
-import {
-  applyFilters,
-} from "@/components/shop-page/filters/applyFilters";
+import { applyFilters } from "@/components/shop-page/filters/applyFilters";
 import {
   DEFAULT_FILTERS,
   type FiltersState,
@@ -18,7 +16,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { newArrivalsData, relatedProductData, topSellingData } from "../page";
+import {
+  newArrivalsData,
+  relatedProductData,
+  topSellingData,
+} from "@/data/products";
 import ProductCard from "@/components/common/ProductCard";
 import {
   Pagination,
@@ -29,20 +31,16 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { effectivePrice } from "@/utils/product";
 
 type SortOption = "most-popular" | "low-price" | "high-price";
 
+// Module-scope so the array isn't rebuilt on every render.
 const ALL_PRODUCTS = [
   ...relatedProductData,
   ...newArrivalsData,
   ...topSellingData,
 ];
-
-const effectivePrice = (price: number, percentage: number, amount: number) => {
-  if (percentage > 0) return Math.round(price - (price * percentage) / 100);
-  if (amount > 0) return price - amount;
-  return price;
-};
 
 export default function ShopPage() {
   const [draftFilters, setDraftFilters] =
@@ -55,17 +53,9 @@ export default function ShopPage() {
     const filtered = applyFilters(ALL_PRODUCTS, appliedFilters);
     const sorted = [...filtered];
     if (sort === "low-price") {
-      sorted.sort(
-        (a, b) =>
-          effectivePrice(a.price, a.discount.percentage, a.discount.amount) -
-          effectivePrice(b.price, b.discount.percentage, b.discount.amount)
-      );
+      sorted.sort((a, b) => effectivePrice(a) - effectivePrice(b));
     } else if (sort === "high-price") {
-      sorted.sort(
-        (a, b) =>
-          effectivePrice(b.price, b.discount.percentage, b.discount.amount) -
-          effectivePrice(a.price, a.discount.percentage, a.discount.amount)
-      );
+      sorted.sort((a, b) => effectivePrice(b) - effectivePrice(a));
     }
     return sorted;
   }, [appliedFilters, sort]);
@@ -73,6 +63,8 @@ export default function ShopPage() {
   const totalProducts = filteredProducts.length;
   const showingTo = Math.min(10, totalProducts);
   const showingFrom = totalProducts === 0 ? 0 : 1;
+
+  const heading = appliedFilters.category ?? "All Products";
 
   return (
     <main className="pb-20">
@@ -90,7 +82,7 @@ export default function ShopPage() {
           <div className="flex flex-col w-full space-y-5">
             <div className="flex flex-col lg:flex-row lg:justify-between gap-3">
               <div className="flex items-center justify-between gap-3">
-                <h1 className="font-bold text-2xl md:text-[32px]">Casual</h1>
+                <h1 className="font-bold text-2xl md:text-[32px]">{heading}</h1>
                 <MobileFilters
                   filters={draftFilters}
                   onChange={(next) => {
