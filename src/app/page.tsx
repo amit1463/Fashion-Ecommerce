@@ -18,6 +18,10 @@ export const newArrivalsData: Product[] = [
       percentage: 0,
     },
     rating: 4.5,
+    category: "T-shirts",
+    color: "White",
+    sizes: ["Small", "Medium", "Large"],
+    dressStyle: "Casual",
   },
   {
     id: 2,
@@ -30,6 +34,10 @@ export const newArrivalsData: Product[] = [
       percentage: 20,
     },
     rating: 3.5,
+    category: "Jeans",
+    color: "Blue",
+    sizes: ["Medium", "Large", "X-Large"],
+    dressStyle: "Casual",
   },
   {
     id: 3,
@@ -42,6 +50,10 @@ export const newArrivalsData: Product[] = [
       percentage: 0,
     },
     rating: 4.5,
+    category: "Shirts",
+    color: "Red",
+    sizes: ["Small", "Medium", "Large", "X-Large"],
+    dressStyle: "Casual",
   },
   {
     id: 4,
@@ -54,6 +66,10 @@ export const newArrivalsData: Product[] = [
       percentage: 30,
     },
     rating: 4.5,
+    category: "T-shirts",
+    color: "Orange",
+    sizes: ["X-Small", "Small", "Medium", "Large"],
+    dressStyle: "Casual",
   },
 ];
 
@@ -69,6 +85,10 @@ export const topSellingData: Product[] = [
       percentage: 20,
     },
     rating: 5.0,
+    category: "Shirts",
+    color: "Green",
+    sizes: ["Small", "Medium", "Large"],
+    dressStyle: "Formal",
   },
   {
     id: 6,
@@ -81,6 +101,10 @@ export const topSellingData: Product[] = [
       percentage: 0,
     },
     rating: 4.0,
+    category: "T-shirts",
+    color: "Black",
+    sizes: ["Small", "Medium", "Large", "X-Large"],
+    dressStyle: "Casual",
   },
   {
     id: 7,
@@ -93,6 +117,10 @@ export const topSellingData: Product[] = [
       percentage: 0,
     },
     rating: 3.0,
+    category: "Shorts",
+    color: "Cyan",
+    sizes: ["Medium", "Large", "X-Large"],
+    dressStyle: "Gym",
   },
   {
     id: 8,
@@ -105,6 +133,10 @@ export const topSellingData: Product[] = [
       percentage: 0,
     },
     rating: 4.5,
+    category: "Jeans",
+    color: "Blue",
+    sizes: ["Small", "Medium", "Large"],
+    dressStyle: "Casual",
   },
 ];
 
@@ -120,6 +152,10 @@ export const relatedProductData: Product[] = [
       percentage: 20,
     },
     rating: 4.0,
+    category: "Shirts",
+    color: "Purple",
+    sizes: ["Small", "Medium", "Large"],
+    dressStyle: "Formal",
   },
   {
     id: 13,
@@ -132,6 +168,10 @@ export const relatedProductData: Product[] = [
       percentage: 0,
     },
     rating: 3.5,
+    category: "T-shirts",
+    color: "Yellow",
+    sizes: ["Small", "Medium", "Large", "X-Large"],
+    dressStyle: "Party",
   },
   {
     id: 14,
@@ -144,6 +184,10 @@ export const relatedProductData: Product[] = [
       percentage: 0,
     },
     rating: 4.5,
+    category: "Shirts",
+    color: "Pink",
+    sizes: ["Medium", "Large", "X-Large"],
+    dressStyle: "Casual",
   },
   {
     id: 15,
@@ -156,6 +200,10 @@ export const relatedProductData: Product[] = [
       percentage: 30,
     },
     rating: 5.0,
+    category: "T-shirts",
+    color: "Black",
+    sizes: ["Small", "Medium", "Large"],
+    dressStyle: "Party",
   },
 ];
 
