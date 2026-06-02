@@ -1,5 +1,16 @@
-import BreadcrumbShop from "@/components/shop-page/BreadcrumbShop";
+"use client";
 
+import React from "react";
+import BreadcrumbShop from "@/components/shop-page/BreadcrumbShop";
+import Filters from "@/components/shop-page/filters";
+import MobileFilters from "@/components/shop-page/filters/MobileFilters";
+import {
+  applyFilters,
+} from "@/components/shop-page/filters/applyFilters";
+import {
+  DEFAULT_FILTERS,
+  type FiltersState,
+} from "@/components/shop-page/filters/types";
 import {
   Select,
   SelectContent,
@@ -19,25 +30,85 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
+type SortOption = "most-popular" | "low-price" | "high-price";
+
+const ALL_PRODUCTS = [
+  ...relatedProductData,
+  ...newArrivalsData,
+  ...topSellingData,
+];
+
+const effectivePrice = (price: number, percentage: number, amount: number) => {
+  if (percentage > 0) return Math.round(price - (price * percentage) / 100);
+  if (amount > 0) return price - amount;
+  return price;
+};
+
 export default function ShopPage() {
+  const [draftFilters, setDraftFilters] =
+    React.useState<FiltersState>(DEFAULT_FILTERS);
+  const [appliedFilters, setAppliedFilters] =
+    React.useState<FiltersState>(DEFAULT_FILTERS);
+  const [sort, setSort] = React.useState<SortOption>("most-popular");
+
+  const filteredProducts = React.useMemo(() => {
+    const filtered = applyFilters(ALL_PRODUCTS, appliedFilters);
+    const sorted = [...filtered];
+    if (sort === "low-price") {
+      sorted.sort(
+        (a, b) =>
+          effectivePrice(a.price, a.discount.percentage, a.discount.amount) -
+          effectivePrice(b.price, b.discount.percentage, b.discount.amount)
+      );
+    } else if (sort === "high-price") {
+      sorted.sort(
+        (a, b) =>
+          effectivePrice(b.price, b.discount.percentage, b.discount.amount) -
+          effectivePrice(a.price, a.discount.percentage, a.discount.amount)
+      );
+    }
+    return sorted;
+  }, [appliedFilters, sort]);
+
+  const totalProducts = filteredProducts.length;
+  const showingTo = Math.min(10, totalProducts);
+  const showingFrom = totalProducts === 0 ? 0 : 1;
+
   return (
     <main className="pb-20">
       <div className="max-w-frame mx-auto px-4 xl:px-0">
         <hr className="h-[1px] border-t-black/10 mb-5 sm:mb-6" />
         <BreadcrumbShop />
         <div className="flex md:space-x-5 items-start">
+          <aside className="hidden md:block min-w-[295px] max-w-[295px] sticky top-5">
+            <Filters
+              filters={draftFilters}
+              onChange={setDraftFilters}
+              onApply={() => setAppliedFilters(draftFilters)}
+            />
+          </aside>
           <div className="flex flex-col w-full space-y-5">
-            <div className="flex flex-col lg:flex-row lg:justify-between">
-              <div className="flex items-center justify-between">
+            <div className="flex flex-col lg:flex-row lg:justify-between gap-3">
+              <div className="flex items-center justify-between gap-3">
                 <h1 className="font-bold text-2xl md:text-[32px]">Casual</h1>
+                <MobileFilters
+                  filters={draftFilters}
+                  onChange={(next) => {
+                    setDraftFilters(next);
+                    setAppliedFilters(next);
+                  }}
+                />
               </div>
               <div className="flex flex-col sm:items-center sm:flex-row">
                 <span className="text-sm md:text-base text-black/60 mr-3">
-                  Showing 1-10 of 100 Products
+                  Showing {showingFrom}-{showingTo} of {totalProducts} Products
                 </span>
                 <div className="flex items-center">
                   Sort by:{" "}
-                  <Select defaultValue="most-popular">
+                  <Select
+                    value={sort}
+                    onValueChange={(value) => setSort(value as SortOption)}
+                  >
                     <SelectTrigger className="font-medium text-sm px-1.5 sm:text-base w-fit text-black bg-transparent shadow-none border-none">
                       <SelectValue />
                     </SelectTrigger>
@@ -50,15 +121,17 @@ export default function ShopPage() {
                 </div>
               </div>
             </div>
-            <div className="w-full grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
-              {[
-                ...relatedProductData.slice(1, 4),
-                ...newArrivalsData.slice(1, 4),
-                ...topSellingData.slice(1, 4),
-              ].map((product) => (
-                <ProductCard key={product.id} data={product} />
-              ))}
-            </div>
+            {filteredProducts.length === 0 ? (
+              <div className="border border-dashed border-black/10 rounded-2xl py-16 text-center text-black/60">
+                No products match the selected filters.
+              </div>
+            ) : (
+              <div className="w-full grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+                {filteredProducts.slice(0, 10).map((product) => (
+                  <ProductCard key={product.id} data={product} />
+                ))}
+              </div>
+            )}
             <hr className="border-t-black/10" />
             <Pagination className="justify-between">
               <PaginationPrevious href="#" className="border border-black/10" />
