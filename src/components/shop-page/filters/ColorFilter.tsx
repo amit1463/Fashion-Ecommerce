@@ -1,21 +1,9 @@
 "use client";
 
 import React from "react";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/redux";
 import { toggleColorFilter } from "@/lib/features/products/productsSlice";
-
-const COLORS = [
-  { name: "Green", code: "bg-[#00C12B]" },
-  { name: "Red", code: "bg-[#F50606]" },
-  { name: "Yellow", code: "bg-[#F5DD06]" },
-  { name: "Orange", code: "bg-[#F57906]" },
-  { name: "Blue", code: "bg-[#06CAF5]" },
-  { name: "Purple", code: "bg-[#7D06F5]" },
-  { name: "Pink", code: "bg-[#F506A4]" },
-  { name: "White", code: "bg-white border border-black/10" },
-  { name: "Black", code: "bg-black" },
-];
+import { COLORS } from "@/lib/data/colors";
 
 const ColorFilter = () => {
   const dispatch = useAppDispatch();

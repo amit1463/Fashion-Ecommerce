@@ -11,6 +11,7 @@ export type FilterState = {
   selectedColors: string[];
   selectedSizes: string[];
   selectedCategories: string[];
+  selectedDressStyles: string[];
 };
 
 // Define a type for the slice state
@@ -32,6 +33,7 @@ const initialState: ProductsState = {
     selectedColors: [],
     selectedSizes: [],
     selectedCategories: [],
+    selectedDressStyles: [],
   },
 };
 
@@ -49,31 +51,20 @@ export const productsSlice = createSlice({
     setPriceRange: (state, action: PayloadAction<[number, number]>) => {
       state.filters.priceRange = action.payload;
     },
-    toggleColorFilter: (state, action: PayloadAction<string>) => {
-      const color = action.payload;
-      const index = state.filters.selectedColors.indexOf(color);
+    toggleFilter: (
+      state,
+      action: PayloadAction<{
+        key: "selectedColors" | "selectedSizes" | "selectedCategories" | "selectedDressStyles";
+        value: string;
+      }>
+    ) => {
+      const { key, value } = action.payload;
+      const array = state.filters[key];
+      const index = array.indexOf(value);
       if (index > -1) {
-        state.filters.selectedColors.splice(index, 1);
+        array.splice(index, 1);
       } else {
-        state.filters.selectedColors.push(color);
-      }
-    },
-    toggleSizeFilter: (state, action: PayloadAction<string>) => {
-      const size = action.payload;
-      const index = state.filters.selectedSizes.indexOf(size);
-      if (index > -1) {
-        state.filters.selectedSizes.splice(index, 1);
-      } else {
-        state.filters.selectedSizes.push(size);
-      }
-    },
-    toggleCategoryFilter: (state, action: PayloadAction<string>) => {
-      const category = action.payload;
-      const index = state.filters.selectedCategories.indexOf(category);
-      if (index > -1) {
-        state.filters.selectedCategories.splice(index, 1);
-      } else {
-        state.filters.selectedCategories.push(category);
+        array.push(value);
       }
     },
     resetFilters: (state) => {
@@ -82,19 +73,32 @@ export const productsSlice = createSlice({
         selectedColors: [],
         selectedSizes: [],
         selectedCategories: [],
+        selectedDressStyles: [],
       };
     },
   },
 });
 
+const { toggleFilter, ...otherActions } = productsSlice.actions;
+
+// Named action creators that wrap the generic toggleFilter
+export const toggleColorFilter = (color: string) =>
+  toggleFilter({ key: "selectedColors", value: color });
+
+export const toggleSizeFilter = (size: string) =>
+  toggleFilter({ key: "selectedSizes", value: size });
+
+export const toggleCategoryFilter = (category: string) =>
+  toggleFilter({ key: "selectedCategories", value: category });
+
+export const toggleDressStyleFilter = (style: string) =>
+  toggleFilter({ key: "selectedDressStyles", value: style });
+
 export const {
   setColorSelection,
   setSizeSelection,
   setPriceRange,
-  toggleColorFilter,
-  toggleSizeFilter,
-  toggleCategoryFilter,
   resetFilters,
-} = productsSlice.actions;
+} = otherActions;
 
 export default productsSlice.reducer;

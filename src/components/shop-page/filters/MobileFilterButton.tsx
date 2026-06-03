@@ -4,7 +4,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SlidersHorizontal } from "lucide-react";
-import FilterSection from "./filters/FilterSection";
+import FilterSection from "./FilterSection";
 
 const MobileFilterButton = () => {
   const [open, setOpen] = React.useState(false);

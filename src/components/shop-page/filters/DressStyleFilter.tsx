@@ -3,6 +3,8 @@
 import React from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ChevronRight } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/redux";
+import { toggleDressStyleFilter } from "@/lib/features/products/productsSlice";
 
 const DRESS_STYLES = [
   "Casual",
@@ -12,14 +14,13 @@ const DRESS_STYLES = [
 ];
 
 const DressStyleFilter = () => {
-  const [selectedStyles, setSelectedStyles] = React.useState<string[]>([]);
+  const dispatch = useAppDispatch();
+  const selectedStyles = useAppSelector(
+    (state) => state.products.filters.selectedDressStyles
+  );
 
   const handleStyleToggle = (style: string) => {
-    setSelectedStyles((prev) =>
-      prev.includes(style)
-        ? prev.filter((s) => s !== style)
-        : [...prev, style]
-    );
+    dispatch(toggleDressStyleFilter(style));
   };
 
   return (

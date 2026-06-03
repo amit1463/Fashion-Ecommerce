@@ -1,6 +1,7 @@
 import BreadcrumbShop from "@/components/shop-page/BreadcrumbShop";
 import FilterSection from "@/components/shop-page/filters/FilterSection";
-import MobileFilterButton from "@/components/shop-page/MobileFilterButton";
+import MobileFilterButton from "@/components/shop-page/filters/MobileFilterButton";
+import ShopGrid from "@/components/shop-page/ShopGrid";
 
 import {
   Select,
@@ -10,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { newArrivalsData, relatedProductData, topSellingData } from "../page";
-import ProductCard from "@/components/common/ProductCard";
+import { Product } from "@/types/product.types";
 import {
   Pagination,
   PaginationContent,
@@ -21,7 +22,56 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
+// Enrich products with filtering metadata
+const enrichProductWithMetadata = (product: Product): Product => {
+  const title = product.title.toLowerCase();
+
+  // Infer category from title
+  let category = "T-shirts"; // default
+  if (title.includes("jeans")) category = "Jeans";
+  else if (title.includes("shirt") && !title.includes("t-shirt")) category = "Shirts";
+  else if (title.includes("shorts")) category = "Shorts";
+  else if (title.includes("hoodie")) category = "Hoodie";
+
+  // Infer dress style from title and category
+  let dressStyle = "Casual"; // default
+  if (title.includes("formal") || title.includes("polo")) dressStyle = "Formal";
+  else if (title.includes("party")) dressStyle = "Party";
+  else if (title.includes("gym") || title.includes("fit")) dressStyle = "Gym";
+
+  // Add available sizes (typical for e-commerce)
+  const sizes = ["Small", "Medium", "Large", "X-Large"];
+
+  // Infer colors from title or add common colors
+  const colors: string[] = [];
+  if (title.includes("black")) colors.push("Black");
+  if (title.includes("white")) colors.push("White");
+  if (title.includes("blue")) colors.push("Blue");
+  if (title.includes("green")) colors.push("Green");
+  if (title.includes("red")) colors.push("Red");
+
+  // If no colors detected, add some default colors
+  if (colors.length === 0) {
+    colors.push("Blue", "Black");
+  }
+
+  return {
+    ...product,
+    category,
+    sizes,
+    colors,
+    dressStyle,
+  };
+};
+
 export default function ShopPage() {
+  // Merge all products and enrich with metadata
+  const allProducts = [
+    ...relatedProductData,
+    ...newArrivalsData,
+    ...topSellingData,
+  ].map(enrichProductWithMetadata);
+
   return (
     <main className="pb-20">
       <div className="max-w-frame mx-auto px-4 xl:px-0">
@@ -34,40 +84,30 @@ export default function ShopPage() {
           </aside>
 
           <div className="flex flex-col w-full space-y-5">
-            <div className="flex flex-col lg:flex-row lg:justify-between gap-4">
-              <div className="flex items-center justify-between">
-                <h1 className="font-bold text-2xl md:text-[32px]">Casual</h1>
-                {/* Mobile Filter Button */}
-                <MobileFilterButton />
-              </div>
-              <div className="flex flex-col sm:items-center sm:flex-row">
-                <span className="text-sm md:text-base text-black/60 mr-3">
-                  Showing 1-10 of 100 Products
-                </span>
-                <div className="flex items-center">
-                  Sort by:{" "}
-                  <Select defaultValue="most-popular">
-                    <SelectTrigger className="font-medium text-sm px-1.5 sm:text-base w-fit text-black bg-transparent shadow-none border-none">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="most-popular">Most Popular</SelectItem>
-                      <SelectItem value="low-price">Low Price</SelectItem>
-                      <SelectItem value="high-price">High Price</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+            <div className="flex items-center justify-between lg:hidden">
+              <h1 className="font-bold text-2xl md:text-[32px]">Casual</h1>
+              {/* Mobile Filter Button */}
+              <MobileFilterButton />
+            </div>
+            <div className="hidden lg:block">
+              <h1 className="font-bold text-2xl md:text-[32px]">Casual</h1>
+            </div>
+            <div className="flex flex-col sm:items-center sm:flex-row sm:justify-end">
+              <div className="flex items-center">
+                Sort by:{" "}
+                <Select defaultValue="most-popular">
+                  <SelectTrigger className="font-medium text-sm px-1.5 sm:text-base w-fit text-black bg-transparent shadow-none border-none">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="most-popular">Most Popular</SelectItem>
+                    <SelectItem value="low-price">Low Price</SelectItem>
+                    <SelectItem value="high-price">High Price</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
-            <div className="w-full grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
-              {[
-                ...relatedProductData.slice(1, 4),
-                ...newArrivalsData.slice(1, 4),
-                ...topSellingData.slice(1, 4),
-              ].map((product) => (
-                <ProductCard key={product.id} data={product} />
-              ))}
-            </div>
+            <ShopGrid allProducts={allProducts} />
             <hr className="border-t-black/10" />
             <Pagination className="justify-between">
               <PaginationPrevious href="#" className="border border-black/10" />
