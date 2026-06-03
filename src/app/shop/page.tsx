@@ -1,4 +1,6 @@
 import BreadcrumbShop from "@/components/shop-page/BreadcrumbShop";
+import FilterSection from "@/components/shop-page/filters/FilterSection";
+import MobileFilterButton from "@/components/shop-page/MobileFilterButton";
 
 import {
   Select,
@@ -25,11 +27,18 @@ export default function ShopPage() {
       <div className="max-w-frame mx-auto px-4 xl:px-0">
         <hr className="h-[1px] border-t-black/10 mb-5 sm:mb-6" />
         <BreadcrumbShop />
-        <div className="flex md:space-x-5 items-start">
+        <div className="flex flex-col lg:flex-row lg:space-x-5 items-start">
+          {/* Desktop Filter Sidebar */}
+          <aside className="hidden lg:block w-[295px] flex-shrink-0">
+            <FilterSection />
+          </aside>
+
           <div className="flex flex-col w-full space-y-5">
-            <div className="flex flex-col lg:flex-row lg:justify-between">
+            <div className="flex flex-col lg:flex-row lg:justify-between gap-4">
               <div className="flex items-center justify-between">
                 <h1 className="font-bold text-2xl md:text-[32px]">Casual</h1>
+                {/* Mobile Filter Button */}
+                <MobileFilterButton />
               </div>
               <div className="flex flex-col sm:items-center sm:flex-row">
                 <span className="text-sm md:text-base text-black/60 mr-3">
