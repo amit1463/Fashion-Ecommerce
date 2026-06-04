@@ -22,6 +22,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import { Button } from "@/components/ui/button";
 import { SlidersHorizontal } from "lucide-react";
 
 export default function ShopPage() {
@@ -51,12 +52,14 @@ export default function ShopPage() {
                 {/* Mobile Filter Button */}
                 <Drawer open={isFilterOpen} onOpenChange={setIsFilterOpen}>
                   <DrawerTrigger asChild>
-                    <button
-                      className="md:hidden flex items-center justify-center w-10 h-10 rounded-full bg-[#F0F0F0] hover:bg-black/5 transition-colors"
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="md:hidden w-10 h-10 rounded-full bg-[#F0F0F0] hover:bg-black/5"
                       aria-label="Open filters"
                     >
                       <SlidersHorizontal className="w-5 h-5" />
-                    </button>
+                    </Button>
                   </DrawerTrigger>
                   <DrawerContent className="h-[90vh]">
                     <FilterSidebar onClose={() => setIsFilterOpen(false)} isMobile />

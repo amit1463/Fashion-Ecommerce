@@ -108,13 +108,15 @@ export default function FilterSidebar({ onClose, isMobile = false }: FilterSideb
       {isMobile && (
         <div className="flex items-center justify-between px-6 py-5 border-b border-black/10">
           <h2 className="text-xl font-bold">Filters</h2>
-          <button
+          <Button
             onClick={onClose}
-            className="text-black/40 hover:text-black transition-colors"
+            variant="ghost"
+            size="icon"
+            className="text-black/40 hover:text-black h-auto w-auto p-0"
             aria-label="Close filters"
           >
             <X className="w-6 h-6" />
-          </button>
+          </Button>
         </div>
       )}
 
@@ -179,10 +181,12 @@ export default function FilterSidebar({ onClose, isMobile = false }: FilterSideb
             <AccordionContent contentClassName="pb-6">
               <div className="grid grid-cols-5 gap-4">
                 {colors.map((color) => (
-                  <button
+                  <Button
                     key={color.name}
                     onClick={() => handleColorToggle(color.name)}
-                    className={`w-9 h-9 rounded-full border-2 transition-all ${
+                    variant="ghost"
+                    size="icon"
+                    className={`w-9 h-9 rounded-full border-2 transition-all p-0 hover:bg-transparent ${
                       selectedColors.includes(color.name)
                         ? "border-black scale-110"
                         : "border-black/20 hover:border-black/40"
@@ -206,17 +210,18 @@ export default function FilterSidebar({ onClose, isMobile = false }: FilterSideb
             <AccordionContent contentClassName="pb-6">
               <div className="grid grid-cols-2 gap-3">
                 {sizes.map((size) => (
-                  <button
+                  <Button
                     key={size}
                     onClick={() => handleSizeToggle(size)}
-                    className={`px-5 py-2.5 rounded-full text-sm transition-all ${
+                    variant="ghost"
+                    className={`px-5 py-2.5 rounded-full text-sm transition-all h-auto ${
                       selectedSizes.includes(size)
-                        ? "bg-black text-white"
+                        ? "bg-black text-white hover:bg-black/90"
                         : "bg-[#F0F0F0] text-black/60 hover:bg-black/5"
                     }`}
                   >
                     {size}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </AccordionContent>
