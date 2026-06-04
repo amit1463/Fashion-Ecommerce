@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
+import FilterChip from "./FilterChip";
 
 const sizesData: string[] = [
   "XX-Small",
@@ -33,18 +34,17 @@ const SizeSection = () => {
         <AccordionContent className="pt-4 overflow-visible" contentClassName="!pb-0">
           <div className="flex items-center flex-wrap">
             {sizesData.map((size, idx) => (
-              <button
+              <FilterChip
                 key={idx}
-                type="button"
-                aria-pressed={selected === size}
+                pressed={selected === size}
                 className={cn([
-                  "bg-[#F0F0F0] m-1 flex items-center justify-center px-5 py-2.5 text-sm rounded-full max-h-[39px]",
+                  "bg-[#F0F0F0] m-1 px-5 py-2.5 text-sm max-h-[39px]",
                   selected === size && "bg-black font-medium text-white",
                 ])}
                 onClick={() => setSelected(size)}
               >
                 {size}
-              </button>
+              </FilterChip>
             ))}
           </div>
         </AccordionContent>

@@ -9,6 +9,7 @@ import {
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 import { IoMdCheckmark } from "react-icons/io";
+import FilterChip from "./FilterChip";
 
 type FilterColor = {
   name: string;
@@ -40,15 +41,11 @@ const ColorsSection = () => {
         <AccordionContent className="pt-4 overflow-visible">
           <div className="flex space-2.5 flex-wrap md:grid grid-cols-5 gap-2.5">
             {colorsData.map((color, idx) => (
-              <button
+              <FilterChip
                 key={idx}
-                type="button"
                 aria-label={`Filter by ${color.name}`}
-                aria-pressed={selected === color.name}
-                className={cn([
-                  color.code,
-                  "rounded-full w-9 sm:w-10 h-9 sm:h-10 flex items-center justify-center",
-                ])}
+                pressed={selected === color.name}
+                className={cn([color.code, "w-9 sm:w-10 h-9 sm:h-10"])}
                 onClick={() => setSelected(color.name)}
               >
                 {selected === color.name && (
@@ -61,7 +58,7 @@ const ColorsSection = () => {
                     )}
                   />
                 )}
-              </button>
+              </FilterChip>
             ))}
           </div>
         </AccordionContent>

@@ -9,6 +9,7 @@ import {
 import React, { useState } from "react";
 import { FiSliders } from "react-icons/fi";
 import Filters from ".";
+import FilterChip from "./FilterChip";
 
 const MobileFilters = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -17,13 +18,12 @@ const MobileFilters = () => {
     <div className="block md:hidden">
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
-          <button
-            type="button"
+          <FilterChip
             aria-label="Open filters"
-            className="h-8 w-8 rounded-full bg-[#F0F0F0] flex items-center justify-center"
+            className="h-8 w-8 bg-[#F0F0F0]"
           >
             <FiSliders className="text-base text-black" />
-          </button>
+          </FilterChip>
         </SheetTrigger>
         <SheetContent side="bottom" className="h-[90%] overflow-y-auto rounded-t-[20px]">
           <SheetTitle className="sr-only">Filters</SheetTitle>
