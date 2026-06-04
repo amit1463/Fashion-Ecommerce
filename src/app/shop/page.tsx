@@ -1,5 +1,8 @@
-import BreadcrumbShop from "@/components/shop-page/BreadcrumbShop";
+"use client";
 
+import { useState } from "react";
+import BreadcrumbShop from "@/components/shop-page/BreadcrumbShop";
+import FilterSidebar from "@/components/shop-page/FilterSidebar";
 import {
   Select,
   SelectContent,
@@ -18,18 +21,50 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import { Button } from "@/components/ui/button";
+import { SlidersHorizontal } from "lucide-react";
 
 export default function ShopPage() {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
   return (
     <main className="pb-20">
       <div className="max-w-frame mx-auto px-4 xl:px-0">
         <hr className="h-[1px] border-t-black/10 mb-5 sm:mb-6" />
         <BreadcrumbShop />
         <div className="flex md:space-x-5 items-start">
+          {/* Desktop Filter Sidebar */}
+          <aside className="hidden md:block w-[295px] flex-shrink-0">
+            <div className="border border-black/10 rounded-[20px] p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold">Filters</h2>
+                <SlidersHorizontal className="w-6 h-6 text-black/40" />
+              </div>
+              <FilterSidebar />
+            </div>
+          </aside>
+
           <div className="flex flex-col w-full space-y-5">
             <div className="flex flex-col lg:flex-row lg:justify-between">
               <div className="flex items-center justify-between">
                 <h1 className="font-bold text-2xl md:text-[32px]">Casual</h1>
+                {/* Mobile Filter Button */}
+                <Drawer open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+                  <DrawerTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="md:hidden w-10 h-10 rounded-full bg-[#F0F0F0] hover:bg-black/5"
+                      aria-label="Open filters"
+                    >
+                      <SlidersHorizontal className="w-5 h-5" />
+                    </Button>
+                  </DrawerTrigger>
+                  <DrawerContent className="h-[90vh]">
+                    <FilterSidebar onClose={() => setIsFilterOpen(false)} isMobile />
+                  </DrawerContent>
+                </Drawer>
               </div>
               <div className="flex flex-col sm:items-center sm:flex-row">
                 <span className="text-sm md:text-base text-black/60 mr-3">
